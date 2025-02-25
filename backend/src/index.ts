@@ -1,12 +1,20 @@
 import express from 'express';
 import cors from 'cors';
 import sequelize from './config/database';
-// import banco from './models/banco';
-// import usuario from './models/usuario';
 import bancoRoutes from './routes/bancoRoutes';
 import usuarioRoutes from './routes/usuarioRoutes';
-// console.log('Modelo banco importado:', banco);
-// console.log('Modelo banco importado:', usuario);
+import agenciaRoutes from './routes/agenciaRoutes';
+import contaFinanceiraRoutes from './routes/contaFinanceiraRoutes';
+import portadorRoutes from './routes/portadorRoutes';
+import cartaoRoutes from './routes/cartaoRoutes';
+import portadorCartaoRoutes from './routes/portadorCartaoRoutes';
+import Usuario from './models/usuario';
+import Banco from './models/banco';
+import Agencia from './models/agencia';
+import ContaFinanceira from './models/conta_financeira';
+import Portador from './models/portador';
+import Cartao from './models/cartao';
+import PortadorCartao from './models/portador_cartao';
 
 const app = express();
 const PORT = 5000;
@@ -15,6 +23,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', bancoRoutes);
 app.use('/api', usuarioRoutes);
+app.use('/api', agenciaRoutes);
+app.use('/api', contaFinanceiraRoutes);
+app.use('/api', portadorRoutes);
+app.use('/api', cartaoRoutes);
+app.use('/api', portadorCartaoRoutes);
 
 app.get('/', (req, res) => {
   res.send('Backend do controle financeiro está rodando!');
@@ -25,8 +38,62 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
 
-    // await sequelize.sync({ force: false });
-    // console.log('Banco de dados sincronizado.');
+    const dropTables = false;
+    await sequelize.sync({ force: dropTables });
+    console.log('Banco de dados sincronizado.');
+
+    if (dropTables) {
+      console.log('Recriando dados de teste...');
+
+      const usuario = await Usuario.create({
+      });
+
+      const banco = await Banco.create({
+        usuario_id: 1,
+        nome: "Nu Pagamentos S.A.",
+        ativo: false
+      });
+
+      const agencia = await Agencia.create({
+        usuario_id: usuario.id,
+        banco_id: banco.id,
+        agencia: '0001',
+        ativo: true,
+      });
+
+      const conta_financeira = await ContaFinanceira.create({
+        usuario_id: usuario.id,
+        agencia_id: agencia.id,
+        nome: "0001",
+        numero: "17519640-5",
+        tipo:  1,
+        ativo: true
+      });
+
+      const portador = await Portador.create({
+        usuario_id: usuario.id,
+        conta_financeira_id: conta_financeira.id,
+        nome: "Cartão",
+        tipo:  1,
+        ativo: true
+      });
+
+      const cartao = await Cartao.create({
+        usuario_id: usuario.id,
+        conta_financeira_id: conta_financeira.id,
+        apelido: "Teste",
+        tipo:  1,
+        ativo: true
+      });
+
+      const portador_cartao = await PortadorCartao.create({
+        usuario_id: usuario.id,
+        portador_id: portador.id,
+        cartao_id: cartao.id,
+      });
+
+      console.log('Dados de teste inseridos com sucesso!');
+    }
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);

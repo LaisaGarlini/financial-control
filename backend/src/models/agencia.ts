@@ -2,14 +2,15 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 import Usuario from './usuario';
 
-class Banco extends Model {
+class Agencia extends Model {
   public id!: number;
   public usuario_id!: number;
-  public nome!: string;
+  public banco_id!: number;
+  public agencia!: string;
   public ativo!: boolean;
 }
 
-Banco.init(
+Agencia.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -26,8 +27,12 @@ Banco.init(
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },
-    nome: {
-      type: DataTypes.STRING(150),
+    banco_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    agencia: {
+      type: DataTypes.STRING(6),
       allowNull: false,
     },
     ativo: {
@@ -38,12 +43,12 @@ Banco.init(
   },
   {
     sequelize,
-    modelName: 'banco',
-    tableName: 'banco',
+    modelName: 'agencia',
+    tableName: 'agencia',
   },
 );
 
-Usuario.hasMany(Banco, { foreignKey: 'usuario_id' });
-Banco.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Usuario.hasMany(Agencia, { foreignKey: 'usuario_id' });
+Agencia.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 
-export default Banco;
+export default Agencia;
