@@ -21,23 +21,25 @@ export const AgenciaRepository = {
         })
     },
 
-    async Update(data: AgenciaDTO) {
+    async Update(data: AgenciaDTO): Promise<boolean> {
         const agencia = await Agencia.findByPk(data.id)
+
         if (agencia) {
-            return await agencia.update({ data })
+            await agencia.update({ data })
+            return true
         }
+
+        return false
     },
 
-    async Delete(id: number) {
+    async Delete(id: number): Promise<boolean> {
         const agencia = await Agencia.findByPk(id)
-        const result = agencia
 
-        if (!agencia) {
-            return null
+        if (agencia) {
+            await agencia.destroy()
+            return true
         }
 
-        await agencia.destroy()
-
-        return result
+        return false
     },
 }

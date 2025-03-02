@@ -9,12 +9,12 @@ import portadorRoutes from './routes/portadorRoutes'
 import cartaoRoutes from './routes/cartaoRoutes'
 import portadorCartaoRoutes from './routes/portadorCartaoRoutes'
 import Usuario from './models/usuario'
-import Banco from './models/banco'
 import ContaFinanceira from './models/conta_financeira'
 import Portador from './models/portador'
 import Cartao from './models/cartao'
 import PortadorCartao from './models/portador_cartao'
 import { AgenciaRepository } from './repositories/agencia.repository'
+import { BancoRepository } from './repositories/banco.repository'
 
 const app = express()
 const PORT = 5000
@@ -42,7 +42,7 @@ const startServer = async () => {
 
             const usuario = await Usuario.create({})
 
-            const banco = await Banco.create({
+            const banco = await BancoRepository.Create({
                 usuario_id: 1,
                 nome: 'Nu Pagamentos S.A.',
                 ativo: false,
@@ -50,7 +50,7 @@ const startServer = async () => {
 
             const agencia = await AgenciaRepository.Create({
                 usuario_id: usuario.id,
-                banco_id: banco.id,
+                banco_id: banco.id!,
                 agencia: '0001',
                 ativo: true,
             })
