@@ -18,6 +18,7 @@ class BancoController {
             });
         }
     }
+    
 
     async buscarPorId(req: Request, res: Response): Promise<void> {
         try {

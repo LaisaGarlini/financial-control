@@ -73,16 +73,16 @@ const startServer = async () => {
       const portador = await Portador.create({
         usuario_id: usuario.id,
         conta_financeira_id: conta_financeira.id,
-        nome: "Cartão",
-        tipo:  1,
+        nome: "Pix - Nubank",
+        tipo:  3,
         ativo: true
       });
 
       const cartao = await Cartao.create({
         usuario_id: usuario.id,
         conta_financeira_id: conta_financeira.id,
-        apelido: "Teste",
-        tipo:  1,
+        apelido: "Cartão Nubank",
+        tipo:  3,
         ativo: true
       });
 
