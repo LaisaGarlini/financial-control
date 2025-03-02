@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
   password: 'postgres',
   database: 'financial-control',
   define: {
-    timestamps: false, // Adiciona createdAt e updatedAt automaticamente
+    timestamps: true, // Adiciona createdAt e updatedAt automaticamente
     underscored: true, // Usa snake_case para nomes de colunas
   },
 });

@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 import Usuario from './usuario';
 
-class Agencia extends Model {
+export class AgenciaModel extends Model {
   public id!: number;
   public usuario_id!: number;
   public banco_id!: number;
@@ -10,7 +10,7 @@ class Agencia extends Model {
   public ativo!: boolean;
 }
 
-Agencia.init(
+AgenciaModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -48,7 +48,7 @@ Agencia.init(
   },
 );
 
-Usuario.hasMany(Agencia, { foreignKey: 'usuario_id' });
-Agencia.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Usuario.hasMany(AgenciaModel, { foreignKey: 'usuario_id' });
+AgenciaModel.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 
-export default Agencia;
+export const Agencia = AgenciaModel;
