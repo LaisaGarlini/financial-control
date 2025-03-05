@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import Usuario from '../models/usuario'
+import { UsuarioRepository } from '../repositories/usuario.repository'
 
 class UsuarioController {
     async listar(req: Request, res: Response): Promise<void> {
         try {
-            const usuarios = await Usuario.findAll()
+            const usuarios = await UsuarioRepository.GetUsuarios()
             res.json(usuarios)
         } catch (error) {
             res.status(500).json({ error: 'Erro ao buscar usuários' })
@@ -14,7 +14,7 @@ class UsuarioController {
     async buscarPorId(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params
-            const usuario = await Usuario.findByPk(id)
+            const usuario = await UsuarioRepository.GetUsuarioById(+id)
             if (!usuario) {
                 res.status(404).json({ error: 'Usuário não encontrado' })
                 return
@@ -27,8 +27,19 @@ class UsuarioController {
 
     async criar(req: Request, res: Response): Promise<void> {
         try {
-            const novoUsuario = await Usuario.create({ })
-            res.status(201).json(novoUsuario)
+            const { nome } = req.body
+
+            if (!nome) {
+                res.status(400).json({
+                    message: 'Os campos "nome" são obrigatórios.',
+                })
+                return
+            }
+            const novoUsuario = await UsuarioRepository.Create({ nome })
+            res.status(201).json({
+                message: 'Usuário criado com sucesso.',
+                data: novoUsuario,
+            })
         } catch (error) {
             res.status(500).json({ error: 'Erro ao criar usuário' })
         }
@@ -52,12 +63,11 @@ class UsuarioController {
     async deletar(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params
-            const usuario = await Usuario.findByPk(id)
+            const usuario = await UsuarioRepository.Delete(+id)
             if (!usuario) {
                 res.status(404).json({ error: 'Usuario não encontrado' })
                 return
             }
-            await Usuario.destroy()
             res.json({ message: 'Usuario deletado com sucesso' })
         } catch (error) {
             res.status(500).json({ error: 'Erro ao deletar Usuario' })

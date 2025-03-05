@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/database'
-import Usuario from './usuario'
+import { Usuario } from './usuario'
 import { Agencia } from './agencia'
 
-class ContaFinanceira extends Model {
+class ContaFinanceiraModel extends Model {
     public id!: number
     public usuario_id!: number
     public agencia_id!: number
@@ -13,7 +13,7 @@ class ContaFinanceira extends Model {
     public ativo!: boolean
 }
 
-ContaFinanceira.init(
+ContaFinanceiraModel.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -66,10 +66,10 @@ ContaFinanceira.init(
     },
 )
 
-Usuario.hasMany(ContaFinanceira, { foreignKey: 'usuario_id' })
-ContaFinanceira.belongsTo(Usuario, { foreignKey: 'usuario_id' })
+Usuario.hasMany(ContaFinanceiraModel, { foreignKey: 'usuario_id' })
+ContaFinanceiraModel.belongsTo(Usuario, { foreignKey: 'usuario_id' })
 
-Agencia.hasMany(ContaFinanceira, { foreignKey: 'agencia_id' })
-ContaFinanceira.belongsTo(Agencia, { foreignKey: 'agencia_id' })
+Agencia.hasMany(ContaFinanceiraModel, { foreignKey: 'agencia_id' })
+ContaFinanceiraModel.belongsTo(Agencia, { foreignKey: 'agencia_id' })
 
-export default ContaFinanceira
+export const ContaFinanceira = ContaFinanceiraModel

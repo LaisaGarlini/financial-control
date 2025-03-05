@@ -8,13 +8,13 @@ import contaFinanceiraRoutes from './routes/contaFinanceiraRoutes'
 import portadorRoutes from './routes/portadorRoutes'
 import cartaoRoutes from './routes/cartaoRoutes'
 import portadorCartaoRoutes from './routes/portadorCartaoRoutes'
-import Usuario from './models/usuario'
-import ContaFinanceira from './models/conta_financeira'
-import Portador from './models/portador'
-import Cartao from './models/cartao'
-import PortadorCartao from './models/portador_cartao'
 import { AgenciaRepository } from './repositories/agencia.repository'
 import { BancoRepository } from './repositories/banco.repository'
+import { ContaFinanceiraRepository } from './repositories/contaFinanceira.repository'
+import { CartaoRepository } from './repositories/cartao.repository'
+import { PortadorCartaoRepository } from './repositories/portadorCartao.repository'
+import { PortadorRepository } from './repositories/portador.repository'
+import { UsuarioRepository } from './repositories/usuario.repository'
 
 const app = express()
 const PORT = 5000
@@ -33,14 +33,14 @@ const startServer = async () => {
         console.log('Conexão com o banco de dados estabelecida com sucesso.')
 
         // quando craiar a primeira vez dropTables = true para inserir os dados
-        const dropTables = false
+        const dropTables = true
         await sequelize.sync({ force: dropTables })
         console.log('Banco de dados sincronizado.')
 
         if (dropTables) {
             console.log('Recriando dados de teste...')
 
-            const usuario = await Usuario.create({})
+            const usuario = await UsuarioRepository.Create({ nome: 'joão' })
 
             const banco = await BancoRepository.Create({
                 usuario_id: 1,
@@ -55,16 +55,16 @@ const startServer = async () => {
                 ativo: true,
             })
 
-            const conta_financeira = await ContaFinanceira.create({
+            const conta_financeira = await ContaFinanceiraRepository.Create({
                 usuario_id: usuario.id,
-                agencia_id: agencia.id,
+                agencia_id: agencia.id!,
                 nome: '0001',
                 numero: '17519640-5',
                 tipo: 1,
                 ativo: true,
             })
 
-            const portador = await Portador.create({
+            const portador = await PortadorRepository.Create({
                 usuario_id: usuario.id,
                 conta_financeira_id: conta_financeira.id,
                 nome: 'Pix - Nubank',
@@ -72,7 +72,7 @@ const startServer = async () => {
                 ativo: true,
             })
 
-            const cartao = await Cartao.create({
+            const cartao = await CartaoRepository.Create({
                 usuario_id: usuario.id,
                 conta_financeira_id: conta_financeira.id,
                 apelido: 'Cartão Nubank',
@@ -80,7 +80,7 @@ const startServer = async () => {
                 ativo: true,
             })
 
-            const portador_cartao = await PortadorCartao.create({
+            const portador_cartao = await PortadorCartaoRepository.Create({
                 usuario_id: usuario.id,
                 portador_id: portador.id,
                 cartao_id: cartao.id,
