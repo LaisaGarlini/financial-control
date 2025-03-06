@@ -1,14 +1,29 @@
 import { AgenciaDTO } from '../dto/agencia.dto'
 import { Agencia } from '../models/agencia'
+import { Banco } from '../models/banco'
 
 export const AgenciaRepository = {
     async GetAgencias(): Promise<AgenciaDTO[]> {
-        return await Agencia.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } })
+        return await Agencia.findAll({
+            include: {
+                model: Banco,
+                attributes: ['nome'],
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+            },
+        })
     },
 
     async GetAgenciaById(id: number): Promise<AgenciaDTO | null> {
         return await Agencia.findByPk(id, {
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: {
+                model: Banco,
+                attributes: ['nome'],
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+            },
         })
     },
 

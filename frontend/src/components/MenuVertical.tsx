@@ -44,7 +44,7 @@ const VerticalMenu = () => {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link href="/lancamento_financeiro_consulta" className="flex items-center justify-center p-2 hover:bg-zinc-700 rounded">
+              <Link href="/lancamento_financeiro" className="flex items-center justify-center p-2 hover:bg-zinc-700 rounded">
                 <FontAwesomeIcon icon={faMoneyBillTransfer} className="text-xl" />
               </Link>
             </TooltipTrigger>
@@ -57,7 +57,7 @@ const VerticalMenu = () => {
         <div className="mt-auto">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Link href="/settings" className="flex items-center justify-center p-2 hover:bg-zinc-700 rounded">
+              <Link href="/configuracoes" className="flex items-center justify-center p-2 hover:bg-zinc-700 rounded">
                 <FontAwesomeIcon icon={faCog} className="text-xl" />
               </Link>
             </TooltipTrigger>

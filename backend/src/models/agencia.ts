@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/database'
 import { Usuario } from './usuario'
+import { Banco } from './banco'
 
 export class AgenciaModel extends Model {
     public id!: number
@@ -30,6 +31,10 @@ AgenciaModel.init(
         banco_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: Banco,
+                key: 'id',
+            },
         },
         agencia: {
             type: DataTypes.STRING(6),
@@ -50,5 +55,8 @@ AgenciaModel.init(
 
 Usuario.hasMany(AgenciaModel, { foreignKey: 'usuario_id' })
 AgenciaModel.belongsTo(Usuario, { foreignKey: 'usuario_id' })
+
+Banco.hasMany(AgenciaModel, { foreignKey: 'banco_id' })
+AgenciaModel.belongsTo(Banco, { foreignKey: 'banco_id' })
 
 export const Agencia = AgenciaModel

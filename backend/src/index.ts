@@ -33,7 +33,7 @@ const startServer = async () => {
         console.log('Conexão com o banco de dados estabelecida com sucesso.')
 
         // quando craiar a primeira vez dropTables = true para inserir os dados
-        const dropTables = true
+        const dropTables = false
         await sequelize.sync({ force: dropTables })
         console.log('Banco de dados sincronizado.')
 
@@ -58,7 +58,7 @@ const startServer = async () => {
             const conta_financeira = await ContaFinanceiraRepository.Create({
                 usuario_id: usuario.id,
                 agencia_id: agencia.id!,
-                nome: '0001',
+                nome: 'Conta Principal',
                 numero: '17519640-5',
                 tipo: 1,
                 ativo: true,

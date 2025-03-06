@@ -36,19 +36,31 @@ const columns = [
         className="flex items-center hover:bg-gray-100 p-2 rounded"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Código
+        ID
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </button>
     ),
   },
   {
-    accessorKey: "nome",
+    accessorKey: "banco.nome",
     header: ({ column }) => (
       <button
         className="flex items-center hover:bg-gray-100 p-2 rounded"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Nome
+        Nome do Banco
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </button>
+    ),
+  },
+  {
+    accessorKey: "agencia",
+    header: ({ column }) => (
+      <button
+        className="flex items-center hover:bg-gray-100 p-2 rounded"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Agência
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </button>
     ),
@@ -74,7 +86,7 @@ const columns = [
   },
 ];
 
-export default function BancoConsulta() {
+export default function AgenciaConsulta() {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState([]);
   const [data, setData] = useState([]);
@@ -82,7 +94,7 @@ export default function BancoConsulta() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/banco');
+        const response = await fetch('http://localhost:5000/api/agencia');
         const result = await response.json();
         setData(result);
       } catch (error) {
@@ -112,7 +124,7 @@ export default function BancoConsulta() {
       <VerticalMenu />
       <div className="flex-1 px-8 py-4 overflow-hidden m-0">
         <div className='flex flex-col md:flex-row justify-between items-center pb-3 m-0'>
-          <h1 className='text-2xl md:text-3xl font-medium mb-4 md:mb-0'>Bancos</h1>
+          <h1 className='text-2xl md:text-3xl font-medium mb-4 md:mb-0'>Agências</h1>
           <h1 className='text-base'>Laisa Garlini</h1>
         </div>
         <div className='mb-3'>
@@ -139,7 +151,9 @@ export default function BancoConsulta() {
                       } else if (header.id === "id") {
                         className += " text-right";
                         style.width = "80px";
-                      } else if (header.id === "nome") {
+                      } else if (header.id === "nome_banco") {
+                        className += " text-left";
+                      } else if (header.id === "agencia") {
                         className += " text-left";
                       } else if (header.id === "ativo") {
                         className += " text-center";
@@ -168,7 +182,9 @@ export default function BancoConsulta() {
                       } else if (cell.column.id === "id") {
                         className += " text-right";
                         style.width = "80px";
-                      } else if (cell.column.id === "nome") {
+                      } else if (cell.column.id === "nome_banco") {
+                        className += " text-left";
+                      } else if (cell.column.id === "agencia") {
                         className += " text-left";
                       } else if (cell.column.id === "ativo") {
                         className += " text-center";
