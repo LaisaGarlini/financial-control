@@ -171,10 +171,10 @@ export default function ContaFinanceiraConsulta() {
       <VerticalMenu />
       <div className="flex-1 px-8 py-4 overflow-hidden m-0">
         <div className="flex flex-col md:flex-row justify-between items-center pb-3 m-0">
-          <h1 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0">Contas Financeiras</h1>
+          <h1 className="text-2xl md:text-3xl font-medium mb-4 md:mb-0">Cadsatro de Conta Financeira</h1>
           <h1 className="text-base">Laisa Garlini</h1>
         </div>
-        <CabecalhoTelaConsulta href="conta_financeira" />
+        <CabecalhoTelaConsulta />
 
         <Card>
           <CardContent className="p-4">

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta';
 
 const columns = [
   {
@@ -127,13 +128,7 @@ export default function AgenciaConsulta() {
           <h1 className='text-2xl md:text-3xl font-medium mb-4 md:mb-0'>Agências</h1>
           <h1 className='text-base'>Laisa Garlini</h1>
         </div>
-        <div className='mb-3'>
-          <Card className='flex row items-center content-start p-2'>
-            <Label className='pr-5' htmlFor="buscar">Buscar</Label>
-            <Input className='w-96 h-7' id="buscar" type="text" />
-            <Button className='w-20 mx-3 h-7'>Pesquisar</Button>
-          </Card>
-        </div>
+        <CabecalhoTelaConsulta href="agencia" />
 
         <Card>
           <CardContent className="p-4">

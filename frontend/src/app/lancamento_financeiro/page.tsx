@@ -10,6 +10,7 @@ import VerticalMenu from '../../components/MenuVertical';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button';
+import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta';
 
 const data = [
   {
@@ -208,13 +209,7 @@ export default function HomePage() {
           <h1 className='text-2xl md:text-3xl font-medium mb-4 md:mb-0'>Lançamento Financeiros</h1>
           <h1 className='text-base'>Laisa Garlini</h1>
         </div>
-        <div className='mb-3'>
-          <Card className='flex row items-center content-start p-2'>
-            <Label className='pr-5' htmlFor="buscar">Buscar</Label>
-            <Input className='w-96 h-7' id="buscar" type="text" />
-            <Button className='w-20 mx-3 h-7'>Pesquisar</Button>
-          </Card>
-        </div>
+        <CabecalhoTelaConsulta href="lancamento_financeiro" />
 
         <Card>
           <CardContent className="p-4">

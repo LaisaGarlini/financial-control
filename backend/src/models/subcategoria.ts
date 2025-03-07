@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/database'
 import { Usuario } from './usuario'
-import Categoria from './categoria'
+import { Categoria } from './categoria'
 
 class SubCategoria extends Model {
     public id!: number
@@ -32,6 +32,9 @@ SubCategoria.init(
         nome: {
             type: DataTypes.STRING(150),
             allowNull: false,
+            validate: {
+                notEmpty: true,
+            },
         },
         categoria_id: {
             type: DataTypes.INTEGER,
@@ -46,7 +49,10 @@ SubCategoria.init(
         tipo: {
             type: DataTypes.SMALLINT,
             allowNull: false,
-            comment: '1 - Entrada; 2 - Saída',
+            validate: {
+                isIn: [[1, 2]],
+            },
+            comment: '1 - Despesa, 2 - Receita',
         },
         ativo: {
             type: DataTypes.BOOLEAN,

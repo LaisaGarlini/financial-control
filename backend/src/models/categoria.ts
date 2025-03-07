@@ -2,14 +2,14 @@ import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/database'
 import { Usuario } from './usuario'
 
-class Categoria extends Model {
+class CategoriaModel extends Model {
     public id!: number
     public usuario_id!: number
     public nome!: string
     public ativo!: boolean
 }
 
-Categoria.init(
+CategoriaModel.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -29,6 +29,9 @@ Categoria.init(
         nome: {
             type: DataTypes.STRING(150),
             allowNull: false,
+            validate: {
+                notEmpty: true,
+            },
         },
         ativo: {
             type: DataTypes.BOOLEAN,
@@ -43,7 +46,7 @@ Categoria.init(
     },
 )
 
-Usuario.hasMany(Categoria, { foreignKey: 'usuario_id' })
-Categoria.belongsTo(Usuario, { foreignKey: 'usuario_id' })
+Usuario.hasMany(CategoriaModel, { foreignKey: 'usuario_id' })
+CategoriaModel.belongsTo(Usuario, { foreignKey: 'usuario_id' })
 
-export default Categoria
+export const Categoria = CategoriaModel
