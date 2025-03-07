@@ -10,8 +10,8 @@ export const BancoRepository = {
         return await Banco.findByPk(id, { attributes: { exclude: ['created_at', 'updated_at'] } })
     },
 
-    async Create(data: Omit<bancoDTO, 'id'>): Promise<bancoDTO> {
-        return await Banco.create(data)
+    async Create(data: bancoDTO): Promise<bancoDTO> {
+        return await Banco.create(data as any, { fields: ['id', 'usuario_id', 'nome', 'ativo'] })
     },
 
     async Update(data: bancoDTO): Promise<boolean> {

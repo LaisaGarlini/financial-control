@@ -39,7 +39,7 @@ class BancoController {
 
     async criar(req: Request, res: Response): Promise<void> {
         try {
-            const { nome, usuario_id, ativo } = req.body
+            const { id, nome, usuario_id, ativo } = req.body
 
             if (!nome || !usuario_id) {
                 res.status(400).json({
@@ -48,7 +48,15 @@ class BancoController {
                 return
             }
 
-            const novoBanco = await BancoRepository.Create({ nome, usuario_id, ativo })
+            if (id) {
+                const bancoExistente = await BancoRepository.GetBancoById(id)
+                if (bancoExistente) {
+                    res.status(400).json({ message: `Já existe um banco com o ID ${id}.` })
+                    return
+                }
+            }
+
+            const novoBanco = await BancoRepository.Create({ id, nome, usuario_id, ativo })
             res.status(201).json({
                 message: 'Banco criado com sucesso.',
                 data: novoBanco,

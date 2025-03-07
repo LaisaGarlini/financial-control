@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -22,6 +23,9 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={`${firaSans.variable} antialiased`}>
         {children}
+        <Toaster
+          expand={true}
+        />
       </body>
     </html>
   );

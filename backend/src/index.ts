@@ -57,9 +57,31 @@ const startServer = async () => {
             const usuario = await UsuarioRepository.Create({ nome: 'Teste' })
 
             const banco = await BancoRepository.Create({
+                id: 260,
                 usuario_id: 1,
                 nome: 'Nu Pagamentos S.A.',
-                ativo: false,
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 756,
+                usuario_id: 1,
+                nome: 'Sicoob',
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 208,
+                usuario_id: 1,
+                nome: 'Banco BTG Pactual S.A.',
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 102,
+                usuario_id: 1,
+                nome: 'Banco XP S.A.',
+                ativo: true,
             })
 
             const agencia = await AgenciaRepository.Create({
