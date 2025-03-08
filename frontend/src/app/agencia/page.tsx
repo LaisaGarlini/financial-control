@@ -4,14 +4,23 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ArrowUpDown } from 'lucide-react'
-import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table'
+import {
+    useReactTable,
+    getCoreRowModel,
+    getSortedRowModel,
+    getPaginationRowModel,
+    flexRender,
+    SortingState,
+    ColumnDef,
+} from '@tanstack/react-table'
 import VerticalMenu from '../../components/MenuVertical'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons'
 import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta'
+import { AgenciaService } from '@/services/agencia/agenciaService'
+import { AgenciaDTO } from '@/dto/agencia.dto'
 
-const columns = [
+const columns: ColumnDef<AgenciaDTO>[] = [
     {
         id: 'select',
         header: ({ table }) => (
@@ -27,7 +36,11 @@ const columns = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 ID
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'asc' ? (
+                    <FontAwesomeIcon icon={faArrowUp} className="ml-2 h-4 w-4" />
+                ) : (
+                    <FontAwesomeIcon icon={faArrowDown} className="ml-2 h-4 w-4" />
+                )}
             </button>
         ),
     },
@@ -39,7 +52,11 @@ const columns = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Nome do Banco
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'asc' ? (
+                    <FontAwesomeIcon icon={faArrowUp} className="ml-2 h-4 w-4" />
+                ) : (
+                    <FontAwesomeIcon icon={faArrowDown} className="ml-2 h-4 w-4" />
+                )}
             </button>
         ),
     },
@@ -51,7 +68,11 @@ const columns = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Agência
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'asc' ? (
+                    <FontAwesomeIcon icon={faArrowUp} className="ml-2 h-4 w-4" />
+                ) : (
+                    <FontAwesomeIcon icon={faArrowDown} className="ml-2 h-4 w-4" />
+                )}
             </button>
         ),
     },
@@ -63,7 +84,11 @@ const columns = [
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 Ativo
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                {column.getIsSorted() === 'asc' ? (
+                    <FontAwesomeIcon icon={faArrowUp} className="ml-2 h-4 w-4" />
+                ) : (
+                    <FontAwesomeIcon icon={faArrowDown} className="ml-2 h-4 w-4" />
+                )}
             </button>
         ),
         cell: ({ row }) => (
@@ -76,15 +101,14 @@ const columns = [
 
 export default function AgenciaConsulta() {
     const [rowSelection, setRowSelection] = useState({})
-    const [sorting, setSorting] = useState([])
-    const [data, setData] = useState([])
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [data, setData] = useState<AgenciaDTO[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/agencia')
-                const result = await response.json()
-                setData(result)
+                const response = await AgenciaService.getAgencias()
+                setData(response)
             } catch (error) {
                 console.error('Erro ao buscar dados da API:', error)
             }
@@ -107,6 +131,24 @@ export default function AgenciaConsulta() {
         getPaginationRowModel: getPaginationRowModel(),
     })
 
+    function colunmStyle(columnName: string) {
+        let className = 'px-4 py-2'
+
+        if (columnName === 'select') {
+            className += ' text-center w-[35px]'
+        } else if (columnName === 'id') {
+            className += ' text-right w-[80px]'
+        } else if (columnName === 'nome_banco') {
+            className += ' text-left'
+        } else if (columnName === 'agencia') {
+            className += ' text-left'
+        } else if (columnName === 'ativo') {
+            className += ' text-center w-[80px]'
+        }
+
+        return className
+    }
+
     return (
         <div className="flex h-screen overflow-hidden">
             <VerticalMenu />
@@ -124,26 +166,8 @@ export default function AgenciaConsulta() {
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <TableRow key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => {
-                                            let className = 'px-4 py-2'
-                                            const style = {}
-
-                                            if (header.id === 'select') {
-                                                className += ' text-center'
-                                                style.width = '35px'
-                                            } else if (header.id === 'id') {
-                                                className += ' text-right'
-                                                style.width = '80px'
-                                            } else if (header.id === 'nome_banco') {
-                                                className += ' text-left'
-                                            } else if (header.id === 'agencia') {
-                                                className += ' text-left'
-                                            } else if (header.id === 'ativo') {
-                                                className += ' text-center'
-                                                style.width = '80px'
-                                            }
-
                                             return (
-                                                <TableHead key={header.id} className={className} style={style}>
+                                                <TableHead key={header.id} className={colunmStyle(header.column.id)}>
                                                     {flexRender(header.column.columnDef.header, header.getContext())}
                                                 </TableHead>
                                             )
@@ -155,26 +179,8 @@ export default function AgenciaConsulta() {
                                 {table.getRowModel().rows.map((row) => (
                                     <TableRow key={row.id}>
                                         {row.getVisibleCells().map((cell) => {
-                                            let className = 'px-4 py-2'
-                                            const style = {}
-
-                                            if (cell.column.id === 'select') {
-                                                className += ' text-center'
-                                                style.width = '35px'
-                                            } else if (cell.column.id === 'id') {
-                                                className += ' text-right'
-                                                style.width = '80px'
-                                            } else if (cell.column.id === 'nome_banco') {
-                                                className += ' text-left'
-                                            } else if (cell.column.id === 'agencia') {
-                                                className += ' text-left'
-                                            } else if (cell.column.id === 'ativo') {
-                                                className += ' text-center'
-                                                style.width = '80px'
-                                            }
-
                                             return (
-                                                <TableCell key={cell.id} className={className} style={style}>
+                                                <TableCell key={cell.id} className={colunmStyle(cell.column.id)}>
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
                                             )
