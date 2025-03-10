@@ -3,7 +3,7 @@ import sequelize from '../config/database'
 import { Usuario } from './usuario'
 import { Categoria } from './categoria'
 
-class SubCategoria extends Model {
+class SubCategoriaModel extends Model {
     public id!: number
     public usuario_id!: number
     public nome!: string
@@ -12,7 +12,7 @@ class SubCategoria extends Model {
     public ativo!: boolean
 }
 
-SubCategoria.init(
+SubCategoriaModel.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -67,10 +67,10 @@ SubCategoria.init(
     },
 )
 
-Usuario.hasMany(SubCategoria, { foreignKey: 'usuario_id' })
-SubCategoria.belongsTo(Usuario, { foreignKey: 'usuario_id' })
+Usuario.hasMany(SubCategoriaModel, { foreignKey: 'usuario_id' })
+SubCategoriaModel.belongsTo(Usuario, { foreignKey: 'usuario_id' })
 
-Categoria.hasMany(SubCategoria, { foreignKey: 'categoria_id' })
-SubCategoria.belongsTo(Categoria, { foreignKey: 'categoria_id' })
+Categoria.hasMany(SubCategoriaModel, { foreignKey: 'categoria_id' })
+SubCategoriaModel.belongsTo(Categoria, { foreignKey: 'categoria_id' })
 
-export default SubCategoria
+export const SubCategoria = SubCategoriaModel

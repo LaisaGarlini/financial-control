@@ -1,5 +1,5 @@
 import { SubcategoriaDTO } from '../dto/subcategoria.dto'
-import SubCategoria from '../models/subcategoria'
+import { SubCategoria } from '../models/subcategoria'
 import { Categoria } from '../models/categoria'
 
 export const SubcategoriaRepository = {

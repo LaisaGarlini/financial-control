@@ -230,7 +230,7 @@
      <remarks></remarks>
     </column>
     <column id="COL61" populated="true" UUID="11e72839-d2d1-4824-86c2-58bdad0bf3e9" autoIncrement="false" autoIncrementSequenceName="tb_movimento_financeiro_situacao_seq" defaultValue="" name="situacao" nullable="0" physicalName="situacao" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="5" userDefinedTypeUUID="69fb547f-e14c-4748-9746-4c0e9e94eb52" >
-     <remarks></remarks>
+     <remarks>1 = Pago; 2 = Pendente; 3 = Atrasado; 4 = Cancelado</remarks>
     </column>
     <column id="COL62" populated="true" UUID="af9d6ad0-9b66-4db5-9a1a-d1a24817c83b" autoIncrement="false" autoIncrementSequenceName="tb_movimento_financeiro_valor_bruto_seq" defaultValue="0" name="valor_bruto" nullable="0" physicalName="valor_bruto" precision="14" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="3" userDefinedTypeUUID="cc1304ea-628a-4fc5-a84a-06ba14759152" >
      <remarks></remarks>

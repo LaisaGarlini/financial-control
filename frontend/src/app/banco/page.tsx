@@ -7,9 +7,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown } from 'lucide-react';
 import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table';
 import VerticalMenu from '../../components/MenuVertical';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta';
@@ -77,7 +74,7 @@ const columns = [
 
 export default function BancoConsulta() {
   const [rowSelection, setRowSelection] = useState({});
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState([{ id: "nome", desc: false }]);
   const [data, setData] = useState([]);
 
   useEffect(() => {

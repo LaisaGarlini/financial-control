@@ -10,6 +10,8 @@ import cartaoRoutes from './routes/cartaoRoutes'
 import portadorCartaoRoutes from './routes/portadorCartaoRoutes'
 import categoriaRoutes from './routes/categoriaRoutes'
 import subcategoriaRoutes from './routes/subcategoriaRoutes'
+import pessoaRoutes from './routes/pessoaRoutes'
+import MovimentoFinanceiroRoutes from './routes/movimentoFinanceiroRoutes'
 import { AgenciaRepository } from './repositories/agencia.repository'
 import { BancoRepository } from './repositories/banco.repository'
 import { ContaFinanceiraRepository } from './repositories/contaFinanceira.repository'
@@ -19,6 +21,8 @@ import { PortadorRepository } from './repositories/portador.repository'
 import { UsuarioRepository } from './repositories/usuario.repository'
 import { CategoriaRepository } from './repositories/categoria.repository'
 import { SubcategoriaRepository } from './repositories/subcategoria.repository'
+import { PessoaRepository } from './repositories/pessoa.repository'
+import { MovimentoFinanceiroRepository } from './repositories/movimentoFinanceiro.repository'
 
 const app = express()
 const PORT = 5000
@@ -35,6 +39,8 @@ app.use('/api', [
     portadorCartaoRoutes,
     categoriaRoutes,
     subcategoriaRoutes,
+    pessoaRoutes,
+    MovimentoFinanceiroRoutes,
 ])
 
 app.get('/', (req, res) => {
@@ -57,9 +63,31 @@ const startServer = async () => {
             const usuario = await UsuarioRepository.Create({ nome: 'Teste' })
 
             const banco = await BancoRepository.Create({
+                id: 260,
                 usuario_id: 1,
                 nome: 'Nu Pagamentos S.A.',
-                ativo: false,
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 756,
+                usuario_id: 1,
+                nome: 'Sicoob',
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 208,
+                usuario_id: 1,
+                nome: 'Banco BTG Pactual S.A.',
+                ativo: true,
+            })
+
+            BancoRepository.Create({
+                id: 102,
+                usuario_id: 1,
+                nome: 'Banco XP S.A.',
+                ativo: true,
             })
 
             const agencia = await AgenciaRepository.Create({
@@ -116,6 +144,36 @@ const startServer = async () => {
                 categoria_id: categoria.id,
                 tipo: 1,
                 ativo: true,
+            })
+
+            const pessoa = await PessoaRepository.Create({
+                usuario_id: usuario.id,
+                razao_social: 'Laisa Garlini',
+                // nome_fantasia: 'Teste',
+                natureza: 'F',
+                cpf_cnpj: '112.543.659-07',
+                // ie_rg: '123456',
+                // observacao: 'Teste',
+                ativo: true,
+                data_cadastro: new Date(),
+            })
+
+            if (typeof usuario.id !== 'number' || typeof subcategoria.id !== 'number') {
+                throw new Error('Os campos "usuario_id" e "subcategoria_id" são obrigatórios e devem ser números válidos.')
+            }
+
+            const movimento_financeiro = await MovimentoFinanceiroRepository.Create({
+                usuario_id: usuario.id,
+                descricao: 'Gasolina',
+                subcategoria_id: subcategoria.id,
+                pessoa_id: pessoa.id,
+                situacao: 2,
+                valor_bruto: 200,
+                valor_pago: 200,
+                data_vencimento: new Date(),
+                data_pagamento: new Date(),
+                previsao: false,
+                observacao: 'Teste',
             })
 
             console.log('Dados de teste inseridos com sucesso!')
