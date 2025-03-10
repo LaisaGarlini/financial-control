@@ -11,6 +11,7 @@ import portadorCartaoRoutes from './routes/portadorCartaoRoutes'
 import categoriaRoutes from './routes/categoriaRoutes'
 import subcategoriaRoutes from './routes/subcategoriaRoutes'
 import pessoaRoutes from './routes/pessoaRoutes'
+import MovimentoFinanceiroRoutes from './routes/movimentoFinanceiroRoutes'
 import { AgenciaRepository } from './repositories/agencia.repository'
 import { BancoRepository } from './repositories/banco.repository'
 import { ContaFinanceiraRepository } from './repositories/contaFinanceira.repository'
@@ -21,6 +22,7 @@ import { UsuarioRepository } from './repositories/usuario.repository'
 import { CategoriaRepository } from './repositories/categoria.repository'
 import { SubcategoriaRepository } from './repositories/subcategoria.repository'
 import { PessoaRepository } from './repositories/pessoa.repository'
+import { MovimentoFinanceiroRepository } from './repositories/movimentoFinanceiro.repository'
 
 const app = express()
 const PORT = 5000
@@ -38,6 +40,7 @@ app.use('/api', [
     categoriaRoutes,
     subcategoriaRoutes,
     pessoaRoutes,
+    MovimentoFinanceiroRoutes,
 ])
 
 app.get('/', (req, res) => {
@@ -153,6 +156,24 @@ const startServer = async () => {
                 // observacao: 'Teste',
                 ativo: true,
                 data_cadastro: new Date(),
+            })
+
+            if (typeof usuario.id !== 'number' || typeof subcategoria.id !== 'number') {
+                throw new Error('Os campos "usuario_id" e "subcategoria_id" são obrigatórios e devem ser números válidos.')
+            }
+
+            const movimento_financeiro = await MovimentoFinanceiroRepository.Create({
+                usuario_id: usuario.id,
+                descricao: 'Gasolina',
+                subcategoria_id: subcategoria.id,
+                pessoa_id: pessoa.id,
+                situacao: 2,
+                valor_bruto: 200,
+                valor_pago: 200,
+                data_vencimento: new Date(),
+                data_pagamento: new Date(),
+                previsao: false,
+                observacao: 'Teste',
             })
 
             console.log('Dados de teste inseridos com sucesso!')
