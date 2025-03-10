@@ -10,6 +10,7 @@ import cartaoRoutes from './routes/cartaoRoutes'
 import portadorCartaoRoutes from './routes/portadorCartaoRoutes'
 import categoriaRoutes from './routes/categoriaRoutes'
 import subcategoriaRoutes from './routes/subcategoriaRoutes'
+import pessoaRoutes from './routes/pessoaRoutes'
 import { AgenciaRepository } from './repositories/agencia.repository'
 import { BancoRepository } from './repositories/banco.repository'
 import { ContaFinanceiraRepository } from './repositories/contaFinanceira.repository'
@@ -19,6 +20,7 @@ import { PortadorRepository } from './repositories/portador.repository'
 import { UsuarioRepository } from './repositories/usuario.repository'
 import { CategoriaRepository } from './repositories/categoria.repository'
 import { SubcategoriaRepository } from './repositories/subcategoria.repository'
+import { PessoaRepository } from './repositories/pessoa.repository'
 
 const app = express()
 const PORT = 5000
@@ -35,6 +37,7 @@ app.use('/api', [
     portadorCartaoRoutes,
     categoriaRoutes,
     subcategoriaRoutes,
+    pessoaRoutes,
 ])
 
 app.get('/', (req, res) => {
@@ -138,6 +141,18 @@ const startServer = async () => {
                 categoria_id: categoria.id,
                 tipo: 1,
                 ativo: true,
+            })
+
+            const pessoa = await PessoaRepository.Create({
+                usuario_id: usuario.id,
+                razao_social: 'Laisa Garlini',
+                // nome_fantasia: 'Teste',
+                natureza: 'F',
+                cpf_cnpj: '112.543.659-07',
+                // ie_rg: '123456',
+                // observacao: 'Teste',
+                ativo: true,
+                data_cadastro: new Date(),
             })
 
             console.log('Dados de teste inseridos com sucesso!')
