@@ -27,7 +27,7 @@ import { MovimentoFinanceiroRepository } from './repositories/movimentoFinanceir
 const app = express()
 const PORT = 5000
 
-app.use(cors())
+app.use(cors({ origin: '*' }))
 app.use(express.json())
 app.use('/api', [
     bancoRoutes,
@@ -53,7 +53,7 @@ const startServer = async () => {
         console.log('Conexão com o banco de dados estabelecida com sucesso.')
 
         // quando craiar a primeira vez dropTables = true para inserir os dados
-        const dropTables = true
+        const dropTables = false
         await sequelize.sync({ force: dropTables })
         console.log('Banco de dados sincronizado.')
 
