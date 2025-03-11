@@ -181,14 +181,6 @@ const startServer = async () => {
 
             SubcategoriaRepository.Create({
                 usuario_id: usuario.id,
-                nome: 'Gasolina',
-                categoria_id: categoriaCarro.id,
-                tipo: 1,
-                ativo: true,
-            })
-
-            SubcategoriaRepository.Create({
-                usuario_id: usuario.id,
                 nome: 'Manutenção',
                 categoria_id: categoriaCarro.id,
                 tipo: 1,

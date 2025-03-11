@@ -71,6 +71,6 @@ Usuario.hasMany(SubCategoriaModel, { foreignKey: 'usuario_id' })
 SubCategoriaModel.belongsTo(Usuario, { foreignKey: 'usuario_id' })
 
 Categoria.hasMany(SubCategoriaModel, { foreignKey: 'categoria_id' })
-SubCategoriaModel.belongsTo(Categoria, { foreignKey: 'categoria_id' })
+SubCategoriaModel.belongsTo(Categoria, { foreignKey: 'categoria_id', as: 'categoria' })
 
 export const SubCategoria = SubCategoriaModel
