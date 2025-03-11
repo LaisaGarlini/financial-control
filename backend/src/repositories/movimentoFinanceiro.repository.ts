@@ -1,25 +1,74 @@
 import { MovimentoFinanceiroDTO } from '../dto/movimento_financeiro.dto'
 import { MovimentoFinanceiro } from '../models/movimento_financeiro'
+import { Pessoa } from '../models/pessoa'
+import { SubCategoria } from '../models/subcategoria'
+import { formatarData, formatarValor } from '../utils/utils'
+
+const mapearSituacao = (situacao: number): string => {
+    return situacao === 1 ? 'Pago' : 'Pendente'
+}
 
 export const MovimentoFinanceiroRepository = {
     async GetMovimentoFinanceiros(): Promise<MovimentoFinanceiroDTO[]> {
-        return await MovimentoFinanceiro.findAll({
+        const movimentos = await MovimentoFinanceiro.findAll({
+            include: [
+                {
+                    model: Pessoa,
+                    attributes: ['razao_social'],
+                },
+                {
+                    model: SubCategoria,
+                    attributes: ['nome', 'tipo'],
+                },
+            ],
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
             },
         })
+
+        return movimentos.map((movimento) => ({
+            ...movimento.get({ plain: true }),
+            situacao: mapearSituacao(movimento.situacao),
+            valor_bruto: formatarValor(movimento.valor_bruto),
+            valor_pago: movimento.valor_pago ? formatarValor(movimento.valor_pago) : null,
+            data_vencimento: formatarData(movimento.data_vencimento),
+            data_pagamento: movimento.data_pagamento ? formatarData(movimento.data_pagamento) : null,
+        }))
     },
 
     async GetMovimentoFinanceiroById(id: number): Promise<MovimentoFinanceiroDTO | null> {
-        return await MovimentoFinanceiro.findByPk(id, {
+        const movimento = await MovimentoFinanceiro.findByPk(id, {
+            include: [
+                {
+                    model: Pessoa,
+                    attributes: ['razao_social'],
+                },
+                {
+                    model: SubCategoria,
+                    attributes: ['nome', 'tipo'],
+                },
+            ],
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
             },
         })
+
+        if (movimento) {
+            return {
+                ...movimento.get({ plain: true }),
+                situacao: mapearSituacao(movimento.situacao),
+                valor_bruto: formatarValor(movimento.valor_bruto),
+                valor_pago: movimento.valor_pago ? formatarValor(movimento.valor_pago) : null,
+                data_vencimento: formatarData(movimento.data_vencimento),
+                data_pagamento: movimento.data_pagamento ? formatarData(movimento.data_pagamento) : null,
+            }
+        }
+
+        return null
     },
 
     async Create(data: Omit<MovimentoFinanceiroDTO, 'id'>): Promise<MovimentoFinanceiroDTO> {
-        return await MovimentoFinanceiro.create({
+        const movimento = await MovimentoFinanceiro.create({
             usuario_id: data.usuario_id,
             descricao: data.descricao,
             subcategoria_id: data.subcategoria_id,
@@ -33,6 +82,15 @@ export const MovimentoFinanceiroRepository = {
             observacao: data.observacao || null,
             data_cadastro: new Date(),
         })
+
+        return {
+            ...movimento.get({ plain: true }),
+            situacao: mapearSituacao(movimento.situacao),
+            valor_bruto: formatarValor(movimento.valor_bruto),
+            valor_pago: movimento.valor_pago ? formatarValor(movimento.valor_pago) : null,
+            data_vencimento: formatarData(movimento.data_vencimento),
+            data_pagamento: movimento.data_pagamento ? formatarData(movimento.data_pagamento) : null,
+        }
     },
 
     async Update(data: Omit<MovimentoFinanceiroDTO, 'data_cadastro'>): Promise<boolean> {
@@ -63,9 +121,9 @@ export const MovimentoFinanceiroRepository = {
 
         if (movimento_financeiro) {
             await movimento_financeiro.destroy()
-            return true // Retorna true se a exclusão for bem-sucedida
+            return true
         }
 
-        return false // Retorna false se o movimento financeiro não for encontrado
+        return false
     },
 }
