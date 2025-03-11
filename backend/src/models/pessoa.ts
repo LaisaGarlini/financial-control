@@ -49,7 +49,7 @@ PessoaModel.init(
         },
         cpf_cnpj: {
             type: DataTypes.STRING(18),
-            allowNull: false,
+            allowNull: true,
             unique: true,
         },
         ie_rg: {

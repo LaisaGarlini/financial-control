@@ -12,6 +12,7 @@ import categoriaRoutes from './routes/categoriaRoutes'
 import subcategoriaRoutes from './routes/subcategoriaRoutes'
 import pessoaRoutes from './routes/pessoaRoutes'
 import MovimentoFinanceiroRoutes from './routes/movimentoFinanceiroRoutes'
+import importarCSVRoutes from './routes/importarCSVRoutes'
 import { AgenciaRepository } from './repositories/agencia.repository'
 import { BancoRepository } from './repositories/banco.repository'
 import { ContaFinanceiraRepository } from './repositories/contaFinanceira.repository'
@@ -23,6 +24,7 @@ import { CategoriaRepository } from './repositories/categoria.repository'
 import { SubcategoriaRepository } from './repositories/subcategoria.repository'
 import { PessoaRepository } from './repositories/pessoa.repository'
 import { MovimentoFinanceiroRepository } from './repositories/movimentoFinanceiro.repository'
+import { ImportarCSVRepository } from './repositories/importarCSV.repository'
 
 const app = express()
 const PORT = 5000
@@ -41,6 +43,7 @@ app.use('/api', [
     subcategoriaRoutes,
     pessoaRoutes,
     MovimentoFinanceiroRoutes,
+    importarCSVRoutes,
 ])
 
 app.get('/', (req, res) => {
@@ -128,21 +131,131 @@ const startServer = async () => {
                 cartao_id: cartao.id,
             })
 
-            const categoria = await CategoriaRepository.Create({
+            const categoriaCarro = await CategoriaRepository.Create({
                 usuario_id: usuario.id,
                 nome: 'Carro',
                 ativo: true,
             })
 
-            if (!categoria.id) {
-                throw new Error('Erro ao criar categoria: ID não definido.')
+            const categoriaAlimentacao = await CategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Alimentação',
+                ativo: true,
+            })
+
+            const categoriaReceitas = await CategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Receitas',
+                ativo: true,
+            })
+
+            const categoriaOutros = await CategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Outros',
+                ativo: true,
+            })
+
+            if (!categoriaCarro.id) {
+                throw new Error('Erro ao criar categoria carro: ID não definido.')
+            }
+
+            if (!categoriaOutros.id) {
+                throw new Error('Erro ao criar categoria outros: ID não definido.')
+            }
+
+            if (!categoriaAlimentacao.id) {
+                throw new Error('Erro ao criar categoria alimentação: ID não definido.')
+            }
+
+            if (!categoriaReceitas.id) {
+                throw new Error('Erro ao criar categoria receitas: ID não definido.')
             }
 
             const subcategoria = await SubcategoriaRepository.Create({
                 usuario_id: usuario.id,
                 nome: 'Gasolina',
-                categoria_id: categoria.id,
+                categoria_id: categoriaCarro.id,
                 tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Gasolina',
+                categoria_id: categoriaCarro.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Manutenção',
+                categoria_id: categoriaCarro.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Seguro',
+                categoria_id: categoriaCarro.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Mercado',
+                categoria_id: categoriaAlimentacao.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Lanches',
+                categoria_id: categoriaAlimentacao.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Outros',
+                categoria_id: categoriaOutros.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Outros',
+                categoria_id: categoriaOutros.id,
+                tipo: 2,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Importados',
+                categoria_id: categoriaOutros.id,
+                tipo: 1,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Importados',
+                categoria_id: categoriaOutros.id,
+                tipo: 2,
+                ativo: true,
+            })
+
+            SubcategoriaRepository.Create({
+                usuario_id: usuario.id,
+                nome: 'Salário - Vexta',
+                categoria_id: categoriaReceitas.id,
+                tipo: 2,
                 ativo: true,
             })
 
@@ -162,19 +275,19 @@ const startServer = async () => {
                 throw new Error('Os campos "usuario_id" e "subcategoria_id" são obrigatórios e devem ser números válidos.')
             }
 
-            const movimento_financeiro = await MovimentoFinanceiroRepository.Create({
-                usuario_id: usuario.id,
-                descricao: 'Gasolina',
-                subcategoria_id: subcategoria.id,
-                pessoa_id: pessoa.id,
-                situacao: 2,
-                valor_bruto: 200,
-                valor_pago: 200,
-                data_vencimento: new Date(),
-                data_pagamento: new Date(),
-                previsao: false,
-                observacao: 'Teste',
-            })
+            // const movimento_financeiro = await MovimentoFinanceiroRepository.Create({
+            //     usuario_id: usuario.id,
+            //     descricao: 'Gasolina',
+            //     subcategoria_id: subcategoria.id,
+            //     pessoa_id: pessoa.id,
+            //     situacao: 2,
+            //     valor_bruto: 200,
+            //     valor_pago: 200,
+            //     data_vencimento: new Date(),
+            //     data_pagamento: new Date(),
+            //     previsao: false,
+            //     observacao: 'Teste',
+            // })
 
             console.log('Dados de teste inseridos com sucesso!')
         }
