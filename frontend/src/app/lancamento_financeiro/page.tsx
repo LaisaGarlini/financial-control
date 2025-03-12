@@ -19,24 +19,24 @@ const columns: CriaColunasProps = {
         { accessorKey: 'situacao', label: 'Situação', colunaWithBadge: true },
         { accessorKey: 'valor_bruto', label: 'Valor Bruto' },
         { accessorKey: 'valor_pago', label: 'Valor Pago' },
-        { accessorKey: 'data_vencimento', label: 'Data de Vencimento' },
-        { accessorKey: 'data_pagamento', label: 'Data de Pagamento' },
+        { accessorKey: 'data_vencimento', label: 'Vencimento' },
+        { accessorKey: 'data_pagamento', label: 'Pagamento' },
     ],
 }
 
 const colunasStyle: ColunaStyleDTO[] = [
-    { id: 'Pago', style: 'bg-green-500 text-white' },
-    { id: 'Pendente', style: 'bg-yellow-300 text-yellow-800' },
+    { id: 'Pago', style: 'bg-green-500 text-white w-[70px]' },
+    { id: 'Pendente', style: 'bg-yellow-300 text-yellow-800 w-[70px]' },
 
     { id: 'descricao', style: 'text-left' },
-    { id: 'subcategorium.nome', style: 'text-left' },
+    { id: 'subcategorium.nome', style: 'text-left w-[130px]' },
     { id: 'pessoa.razao_social', style: 'text-left' },
 
-    { id: 'valor_bruto', style: 'text-right' },
-    { id: 'valor_pago', style: 'text-right' },
+    { id: 'valor_bruto', style: 'text-right w-[130px]' },
+    { id: 'valor_pago', style: 'text-right w-[130px]' },
 
-    { id: 'data_vencimento', style: 'text-center' },
-    { id: 'data_pagamento', style: 'text-center' },
+    { id: 'data_vencimento', style: 'text-center w-[130px]' },
+    { id: 'data_pagamento', style: 'text-center w-[130px]' },
 ]
 
 export default function MovimentoFinanceiroConsulta() {

@@ -66,7 +66,7 @@ export const importCSV = async (req: Request, res: Response): Promise<void> => {
                         continue
                     }
 
-                    const valorBruto = parseFloat(Valor)
+                    const valorBruto = Math.abs(parseFloat(Valor))
                     if (isNaN(valorBruto)) {
                         console.error('Valor inválido:', Valor)
                         continue
