@@ -8,14 +8,22 @@ interface MenuVerticalItemProps {
     href: string
     icon: IconDefinition
     title: string
+    disabled?: boolean
 }
 
-export function MenuVerticalItem({ href, icon, title }: MenuVerticalItemProps) {
+export function MenuVerticalItem({ href, icon, title, disabled }: MenuVerticalItemProps) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Link href={href} className="flex items-center justify-center p-2 hover:bg-zinc-700 rounded">
-                    <FontAwesomeIcon icon={icon} className="text-xl" />
+                <Link
+                    href={disabled ? '' : href}
+                    className={
+                        disabled
+                            ? 'flex items-center justify-center p-2 rounded'
+                            : 'flex items-center justify-center p-2 hover:bg-zinc-700 rounded'
+                    }
+                >
+                    <FontAwesomeIcon icon={icon} className={disabled ? 'text-zinc-700' : 'text-xl'} />
                 </Link>
             </TooltipTrigger>
             <TooltipContent side="right">

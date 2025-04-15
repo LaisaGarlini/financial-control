@@ -12,7 +12,7 @@ const VerticalMenu = () => {
                 <div className="flex-1 space-y-4">
                     <MenuVerticalItem href="/home" icon={faHome} title="Home" />
 
-                    <MenuVerticalItem href="/dashboard" icon={faChartLine} title="Dashboards" />
+                    <MenuVerticalItem href="/dashboard" icon={faChartLine} title="Dashboards" disabled />
 
                     <MenuVerticalItem href="/lancamento_financeiro_cadastro" icon={faPlus} title="Novo Lançamento Financeiro" />
 
