@@ -9,7 +9,7 @@ import { AgenciaDTO } from '@/dto/agencia.dto'
 import { ColunaTabelaPadrao, TabelaPadrao } from '@/components/tabela_padrao/tabelaPadrao'
 
 const columns: ColunaTabelaPadrao[] = [
-    { nome: 'id', style: 'text-right', label: 'ID' },
+    { nome: 'id', style: 'text-left', label: 'ID' },
     { nome: 'banco.nome', style: 'text-left', label: 'Banco' },
     { nome: 'agencia', style: 'text-left', label: 'Agência' },
     { nome: 'ativo', style: 'text-center', label: 'Ativo', isBoolean: true },

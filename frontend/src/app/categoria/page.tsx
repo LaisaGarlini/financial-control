@@ -5,19 +5,12 @@ import VerticalMenu from '../../components/MenuVertical'
 import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta'
 import { CategoriaService } from '@/services/categoria/categoriaService'
 import { CategoriaDTO } from '@/dto/categoria.dto'
-import { CriaColunasProps } from '@/components/tabela_padrao/criaColunas'
-import { TabelaPadrao } from '@/components/tabela_padrao/tabelaPadrao'
-import { ColunaStyleDTO } from '@/dto/colunaStyle.dto'
+import { ColunaTabelaPadrao, TabelaPadrao } from '@/components/tabela_padrao/tabelaPadrao'
 
-const columns: CriaColunasProps = {
-    selectVisible: true,
-    colunmAtivo: true,
-    colunas: [{ accessorKey: 'nome', label: 'Nome' }],
-}
-
-const colunasStyle: ColunaStyleDTO[] = [
-    { id: 'nome', style: 'text-left' },
-    { id: 'ativo', style: 'text-center w-[80px]' },
+const colunas: ColunaTabelaPadrao[] = [
+    { nome: 'id', style: 'text-left', label: 'ID' },
+    { nome: 'nome', style: 'text-left', label: 'Nome' },
+    { nome: 'ativo', style: 'text-center w-[80px]', label: 'Ativo', isBoolean: true },
 ]
 
 export default function CategoriaConsulta() {
@@ -46,7 +39,7 @@ export default function CategoriaConsulta() {
                 </div>
                 <CabecalhoTelaConsulta href="categoria" />
 
-                <TabelaPadrao data={data} colunas={columns} colunasStyle={colunasStyle} />
+                <TabelaPadrao data={data} colunas={colunas} />
             </div>
         </div>
     )

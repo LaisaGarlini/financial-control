@@ -15,6 +15,7 @@ import {
     faPiggyBank,
     faBoxesPacking,
     faTractor,
+    faGear,
 } from '@fortawesome/free-solid-svg-icons'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { MenuVerticalItem } from '@/components/MenuVerticalItem'
@@ -37,6 +38,7 @@ const VerticalMenu = () => {
                     <MenuVerticalItem href={ROTAS.BANCO_CADASTRO} icon={faBoxesPacking} title="Novo Banco" />
                     <MenuVerticalItem href={ROTAS.IMPORTAR_CSV} icon={faFileCsv} title="Importar Extrato CSV" />
                     <MenuVerticalItem href={ROTAS.SUBCATEGORIA} icon={faMoneyBillTransfer} title="Subcategoria" />
+                    <MenuVerticalItem href={ROTAS.CONFIGURACOES} icon={faGear} title="Configurações" />
                 </div>
 
                 <div className="mt-auto">

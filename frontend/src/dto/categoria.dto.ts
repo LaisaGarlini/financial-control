@@ -1,5 +1,5 @@
 export interface CategoriaDTO {
-    id?: number
+    id: number
     usuario_id: number
     nome: string
     ativo: boolean

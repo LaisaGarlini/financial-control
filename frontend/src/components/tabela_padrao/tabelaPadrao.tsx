@@ -75,7 +75,7 @@ export function TabelaPadrao<T extends { id: string | number }>(props: TabelaPad
                     <TableBody>
                         {props.data.map((row) => (
                             <TableRow key={row.id}>
-                                <TableCell>
+                                <TableCell className="w-[50px]">
                                     <Checkbox checked={selectedIds.includes(row.id)} onCheckedChange={() => alternarSelecaoItem(row.id)} />
                                 </TableCell>
                                 {props.colunas.map((coluna) => {
