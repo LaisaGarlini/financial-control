@@ -1,61 +1,59 @@
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    SortingState,
-    useReactTable,
-} from '@tanstack/react-table'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, CardContent } from '../ui/card'
+import { Checkbox } from '../ui/checkbox'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import { useState } from 'react'
-import { ColunaStyleDTO } from '@/dto/colunaStyle.dto'
-import { criaColunas, CriaColunasProps } from './criaColunas'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+
+export interface ColunaTabelaPadrao {
+    nome: string
+    style: string
+    label: string
+    isBoolean?: boolean
+}
 
 interface TabelaPadraoProps<T> {
     data: T[]
-    colunas: CriaColunasProps
-    colunasStyle?: ColunaStyleDTO[]
+    colunas: ColunaTabelaPadrao[]
+    itensSelecionados?: (selectedIds: (string | number)[]) => void
 }
 
-export function TabelaPadrao<T>(props: TabelaPadraoProps<T>) {
-    const [rowSelection, setRowSelection] = useState({})
-    const [sorting, setSorting] = useState<SortingState>([])
+export function TabelaPadrao<T extends { id: string | number }>(props: TabelaPadraoProps<T>) {
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
 
-    const columns: ColumnDef<T>[] = [
-        ...criaColunas<T>({
-            selectVisible: props.colunas.selectVisible,
-            colunmAtivo: props.colunas.colunmAtivo,
-            colunas: props.colunas.colunas,
-        }),
-    ]
+    // Função que alterna a seleção de um item específico na tabela
+    function alternarSelecaoItem(id: string | number) {
+        setSelectedIds((prevSelected) => {
+            const isSelected = prevSelected.includes(id)
+            const updatedSelection = isSelected ? prevSelected.filter((selectedId) => selectedId !== id) : [...prevSelected, id]
 
-    const table = useReactTable({
-        data: props.data,
-        columns: columns,
-        state: {
-            rowSelection,
-            sorting,
-        },
-        onRowSelectionChange: setRowSelection,
-        onSortingChange: setSorting,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-    })
+            if (props.itensSelecionados) {
+                props.itensSelecionados(updatedSelection)
+            }
 
-    function colunmStyle(id: string) {
-        if (!props.colunasStyle) {
-            return ''
-        }
-
-        const coluna = props.colunasStyle.find((coluna) => coluna.id === id)
-        return coluna ? coluna.style : ''
+            return updatedSelection
+        })
     }
 
-    function baget(value: string) {
-        return <span className={`px-2 py-1 rounded ${colunmStyle(value)}`}>{value}</span>
+    // Função que alterna a seleção de todos os itens na tabela
+    function alternarSelecaoTodos() {
+        if (selectedIds.length === props.data.length) {
+            setSelectedIds([])
+            if (props.itensSelecionados) {
+                props.itensSelecionados([])
+            }
+        } else {
+            const allIds = props.data.map((row) => row.id)
+            setSelectedIds(allIds)
+            if (props.itensSelecionados) {
+                props.itensSelecionados(allIds)
+            }
+        }
+    }
+
+    // Função que obtém o valor de uma propriedade aninhada em um objeto com base em um caminho de string
+    function obterValorAninhado(obj: any, caminho: string): any {
+        return caminho.split('.').reduce((acc, key) => (acc ? acc[key] : undefined), obj)
     }
 
     return (
@@ -63,35 +61,38 @@ export function TabelaPadrao<T>(props: TabelaPadraoProps<T>) {
             <CardContent className="p-4">
                 <Table>
                     <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id} className={colunmStyle(header.column.id)}>
-                                            {flexRender(header.column.columnDef.header, header.getContext())}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
+                        <TableRow>
+                            <TableHead>
+                                <Checkbox checked={selectedIds.length === props.data.length} onCheckedChange={alternarSelecaoTodos} />
+                            </TableHead>
+                            {props.colunas.map((coluna) => (
+                                <TableHead key={coluna.nome} className={coluna.style}>
+                                    {coluna.label}
+                                </TableHead>
+                            ))}
+                        </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows.map((row) => (
+                        {props.data.map((row) => (
                             <TableRow key={row.id}>
-                                {row.getVisibleCells().map((cell) => {
-                                    console.log(cell.getContext())
-                                    const coluna = props.colunas.colunas.find((coluna) => coluna.accessorKey === cell.column.id)
-                                    {
-                                        return coluna?.colunaWithBadge ? (
-                                            <TableCell key={cell.id} className={colunmStyle(cell.column.id)}>
-                                                {baget(String(cell.getValue() || ''))}
-                                            </TableCell>
-                                        ) : (
-                                            <TableCell key={cell.id} className={colunmStyle(cell.column.id)}>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </TableCell>
-                                        )
-                                    }
+                                <TableCell>
+                                    <Checkbox checked={selectedIds.includes(row.id)} onCheckedChange={() => alternarSelecaoItem(row.id)} />
+                                </TableCell>
+                                {props.colunas.map((coluna) => {
+                                    const value = obterValorAninhado(row, coluna.nome)
+                                    return (
+                                        <TableCell key={coluna.nome} className={coluna.style}>
+                                            {coluna.isBoolean ? (
+                                                value ? (
+                                                    <FontAwesomeIcon icon={faCheck} className="text-black" />
+                                                ) : (
+                                                    ''
+                                                )
+                                            ) : (
+                                                value
+                                            )}
+                                        </TableCell>
+                                    )
                                 })}
                             </TableRow>
                         ))}

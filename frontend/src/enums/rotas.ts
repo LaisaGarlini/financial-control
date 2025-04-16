@@ -1,0 +1,15 @@
+export enum ROTAS {
+    AGENCIA = '/agencia',
+    BANCO = '/banco',
+    BANCO_CADASTRO = '/banco_cadastro',
+    CATEGORIA = '/categoria',
+    CONFIGURACOES = '/configuracoes',
+    CONTA_FINANCEIRA = '/conta_financeira',
+    CONTA_FINANCEIRA_CADASTRO = '/conta_financeira_cadastro',
+    HOME = '/home',
+    IMPORTAR_CSV = '/importar_csv',
+    LANCAMENTO_FINANCEIRO = '/lancamento_financeiro',
+    LANCAMENTO_FINANCEIRO_CADASTRO = '/lancamento_financeiro_cadastro',
+    PESSOA = '/pessoa',
+    SUBCATEGORIA = '/subcategoria',
+}

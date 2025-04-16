@@ -6,25 +6,13 @@ import VerticalMenu from '../../components/MenuVertical'
 import { CabecalhoTelaConsulta } from '@/components/CabecalhoTelaConsulta'
 import { AgenciaService } from '@/services/agencia/agenciaService'
 import { AgenciaDTO } from '@/dto/agencia.dto'
-import { CriaColunasProps } from '@/components/tabela_padrao/criaColunas'
-import { TabelaPadrao } from '@/components/tabela_padrao/tabelaPadrao'
+import { ColunaTabelaPadrao, TabelaPadrao } from '@/components/tabela_padrao/tabelaPadrao'
 
-const columns: CriaColunasProps = {
-    selectVisible: true,
-    colunmAtivo: true,
-    colunas: [
-        { accessorKey: 'id', label: 'ID' },
-        { accessorKey: 'banco.nome', label: 'Nome do Banco' },
-        { accessorKey: 'agencia', label: 'Agência' },
-    ],
-}
-
-const colunasStyle = [
-    { id: 'select', style: 'text-center w-[35px]' },
-    { id: 'id', style: 'text-right w-[80px]' },
-    { id: 'nome_banco', style: 'text-left' },
-    { id: 'agencia', style: 'text-left' },
-    { id: 'ativo', style: 'text-center w-[80px]' },
+const columns: ColunaTabelaPadrao[] = [
+    { nome: 'id', style: 'text-right', label: 'ID' },
+    { nome: 'banco.nome', style: 'text-left', label: 'Banco' },
+    { nome: 'agencia', style: 'text-left', label: 'Agência' },
+    { nome: 'ativo', style: 'text-center', label: 'Ativo', isBoolean: true },
 ]
 
 export default function AgenciaConsulta() {
@@ -34,6 +22,7 @@ export default function AgenciaConsulta() {
         const fetchData = async () => {
             try {
                 const response = await AgenciaService.getAgencias()
+                // console.log('Dados recebidos:', response)
                 setData(response)
             } catch (error) {
                 console.error('Erro ao buscar dados da API:', error)
@@ -53,7 +42,7 @@ export default function AgenciaConsulta() {
                 </div>
                 <CabecalhoTelaConsulta href="agencia" />
 
-                <TabelaPadrao data={data} colunas={columns} colunasStyle={colunasStyle} />
+                <TabelaPadrao data={data} colunas={columns} />
             </div>
         </div>
     )
