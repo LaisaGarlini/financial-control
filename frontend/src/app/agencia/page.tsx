@@ -22,7 +22,6 @@ export default function AgenciaConsulta() {
         const fetchData = async () => {
             try {
                 const response = await AgenciaService.getAgencias()
-                // console.log('Dados recebidos:', response)
                 setData(response)
             } catch (error) {
                 console.error('Erro ao buscar dados da API:', error)
